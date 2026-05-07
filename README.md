@@ -208,12 +208,27 @@ npm run build
 npm start
 ```
 
-### Deploy to Vercel
+### Deploy to Railway
 
 1. Push code to GitHub
-2. Connect repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy
+2. Go to https://railway.app and create a new project
+3. Connect your GitHub repository to Railway
+4. Add a PostgreSQL plugin or provision a database and copy the connection string
+5. Add environment variables in Railway dashboard (see below)
+6. Deploy — Railway will build and start your app automatically
+
+Environment variables to add in Railway:
+
+- `DATABASE_URL` — PostgreSQL connection string
+- `JWT_SECRET` — secure random secret for JWT tokens
+- `NEXT_PUBLIC_API_URL` — your app public URL (e.g. `https://your-app.up.railway.app`)
+
+After deployment, run migrations and seed (Rails console or CI step):
+
+```bash
+npx prisma migrate deploy
+npm run prisma:seed
+```
 
 ### Deploy to Other Platforms
 

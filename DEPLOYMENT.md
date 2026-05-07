@@ -18,33 +18,32 @@ NEXT_PUBLIC_API_URL=https://yourdomain.com
 
 ## Deployment Platforms
 
-### 1. Vercel (Recommended)
+### 1. Railway (Recommended)
 
-**Best for**: Simple, fast deployment with Next.js
+**Best for**: Quick setup with built-in PostgreSQL plugin and simple CI integration
 
 #### Steps:
 
-1. Push code to GitHub/GitLab/Bitbucket
-2. Go to [vercel.com](https://vercel.com)
-3. Click "New Project" and import your repository
-4. Configure build settings:
-   - Framework Preset: Next.js
-   - Build Command: `npm run build`
-   - Output Directory: `.next`
-5. Add environment variables:
-   - `DATABASE_URL`
+1. Push code to GitHub
+2. Go to https://railway.app and create a new project
+3. Connect your GitHub repository to Railway
+4. Add the PostgreSQL plugin (Railway will provision a database)
+5. In Railway project settings, add the following environment variables:
+   - `DATABASE_URL` (provided by the plugin)
    - `JWT_SECRET`
    - `NEXT_PUBLIC_API_URL`
-6. Click "Deploy"
+6. Deploy — Railway will run the build automatically
 
 #### Database Setup:
 
+After the first deploy, run migrations and seed via Railway's console or in a CI step:
+
 ```bash
-# After deployment, run migrations via Vercel CLI or SSH
-vercel env pull
-npm run prisma:migrate
+npx prisma migrate deploy
 npm run prisma:seed
 ```
+
+Railway also supports running one-off commands from the dashboard to run migrations or seeds directly against the provisioned database.
 
 ### 2. Railway
 
