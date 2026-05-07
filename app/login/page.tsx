@@ -191,7 +191,7 @@ export default function LoginPage() {
                 </div>
               </div>
               <div className="flex items-center justify-between mt-2">
-                <a className="text-sm text-green-600 hover:underline" onClick={() => setMode("forgot")}>Forgot password?</a>
+                <a className="text-sm text-green-600 hover:underline cursor-pointer" onClick={() => setMode('forgot')}>Forgot password?</a>
               </div>
               <div className="mt-4">
                 <button type="submit" disabled={loading} className="w-full py-3 rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 shadow-lg font-semibold">{loading ? "Logging in..." : "Login"}</button>
@@ -204,36 +204,27 @@ export default function LoginPage() {
             <form onSubmit={handleSignup} className="space-y-4">
               <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} required />
               <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              <div className="flex gap-2">
+              <div className="flex gap-4">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                  <div className="flex items-center gap-2">
-                    <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2 border rounded-lg" required />
-                    <button type="button" className="text-sm text-gray-600" onClick={() => setShowPassword((s) => !s)}>{showPassword ? "Hide" : "Show"}</button>
-                  </div>
+                  <Input label="Password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Confirm</label>
-                  <div className="flex items-center gap-2">
-                    <input type={showConfirm ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full px-4 py-2 border rounded-lg" required />
-                    <button type="button" className="text-sm text-gray-600" onClick={() => setShowConfirm((s) => !s)}>{showConfirm ? "Hide" : "Show"}</button>
-                  </div>
+                  <Input label="Confirm" type={showConfirm ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                 </div>
               </div>
 
               <div className="flex gap-2 items-end">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">OTP</label>
-                  <input value={signupOtp} onChange={(e) => setSignupOtp(e.target.value)} placeholder="Enter OTP" className="w-full px-4 py-2 border rounded-lg" />
+                  <Input label="OTP" value={signupOtp} onChange={(e) => setSignupOtp(e.target.value)} placeholder="Enter OTP" />
                 </div>
                 <div>
-                  <Button type="button" onClick={requestSignupOtp}>Get OTP</Button>
+                  <Button type="button" variant="success" onClick={requestSignupOtp}>Get OTP</Button>
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <button type="button" className="text-sm text-gray-600" onClick={() => setMode("login")}>Back to login</button>
-                <Button type="submit" disabled={loading} variant="primary">{loading ? "Signing up..." : "Sign up"}</Button>
+                <button type="button" className="text-sm text-gray-600 cursor-pointer" onClick={() => setMode("login")}>Back to login</button>
+                <Button type="submit" disabled={loading} variant="success">{loading ? "Signing up..." : "Sign up"}</Button>
               </div>
             </form>
           )}
@@ -243,7 +234,7 @@ export default function LoginPage() {
               <Input label="Email" type="email" value={email} onChange={(e) => { setEmail(e.target.value); setIsExistingUser(null); }} required />
 
               <div className="flex gap-2">
-                <Button type="button" onClick={checkEmailExists}>Verify Email</Button>
+                <Button type="button" variant="success" onClick={checkEmailExists}>Verify Email</Button>
                 <div className="flex-1 text-sm text-gray-600 self-center">{isExistingUser === null ? "" : isExistingUser ? "User found" : "User not found"}</div>
               </div>
 
@@ -251,25 +242,20 @@ export default function LoginPage() {
                 <>
                   <div className="flex gap-2 items-end">
                     <div className="flex-1">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">OTP</label>
-                      <input value={forgotOtp} onChange={(e) => setForgotOtp(e.target.value)} placeholder="Enter OTP" className="w-full px-4 py-2 border rounded-lg" />
+                      <Input label="OTP" value={forgotOtp} onChange={(e) => setForgotOtp(e.target.value)} placeholder="Enter OTP" />
                     </div>
                     <div>
-                      <Button type="button" onClick={requestForgotOtp}>Get OTP</Button>
+                      <Button type="button" variant="success" onClick={requestForgotOtp}>Get OTP</Button>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">New password</label>
-                    <div className="flex items-center gap-2">
-                      <input type={showNewPassword ? "text" : "password"} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="w-full px-4 py-2 border rounded-lg" required />
-                      <button type="button" className="text-sm text-gray-600" onClick={() => setShowNewPassword((s) => !s)}>{showNewPassword ? "Hide" : "Show"}</button>
-                    </div>
+                    <Input label="New password" type={showNewPassword ? "text" : "password"} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <button type="button" className="text-sm text-gray-600" onClick={() => setMode("login")}>Back to login</button>
-                    <Button type="submit" disabled={loading} variant="primary">{loading ? "Resetting..." : "Reset password"}</Button>
+                    <button type="button" className="text-sm text-gray-600 cursor-pointer" onClick={() => setMode("login")}>Back to login</button>
+                    <Button type="submit" disabled={loading} variant="success">{loading ? "Resetting..." : "Reset password"}</Button>
                   </div>
                 </>
               )}
