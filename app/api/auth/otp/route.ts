@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
           Authorization: `Bearer ${resendKey}`,
         },
         body: JSON.stringify({
-          from: "TeamFlow <no-reply@teamflow.com>",
+          from: "TeamFlow <onboarding@resend.dev>",
           to: email,
           subject: `Your OTP for TeamFlow (${purpose})`,
           html: `<p>Your verification code is <strong>${code}</strong>. It expires in 10 minutes.</p>`,
