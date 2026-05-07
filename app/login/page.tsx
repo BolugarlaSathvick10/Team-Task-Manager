@@ -10,6 +10,7 @@ type Mode = "login" | "signup" | "forgot";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<Mode>("login");
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
   // common
   const [email, setEmail] = useState("");
@@ -80,8 +81,7 @@ export default function LoginPage() {
       const data = await res.json();
       if (!data.success) return toast.error(data.error || "Signup failed");
       toast.success("Signup successful. You can now login.");
-      setMode("login");
-      setPassword("");
+      setSignupSuccess(true);
     } catch (err) {
       console.error(err);
       toast.error("An error occurred");
@@ -123,7 +123,12 @@ export default function LoginPage() {
       if (!data.success) return toast.error(data.error || "Reset failed");
       toast.success("Password reset successful. Please login.");
       setMode("login");
+      setEmail("");
       setPassword("");
+      setIsExistingUser(null);
+      setForgotOtp("");
+      setNewPassword("");
+      setShowNewPassword(false);
     } catch (err) {
       console.error(err);
       toast.error("An error occurred");
@@ -139,25 +144,27 @@ export default function LoginPage() {
             <p className="text-gray-600">Task Management Platform</p>
           </div>
 
-          {/* Mode tabs (Login / Sign up) */}
+          {/* Mode tabs (Login / Sign up only - forgot accessed via link) */}
           <div className="flex gap-2 mb-4 bg-white rounded-xl p-1">
             <button
               className={`flex-1 py-2 rounded-xl font-semibold transition-shadow ${mode === "login" ? "bg-gradient-to-r from-green-400 to-green-600 text-white shadow" : "bg-white text-gray-700"}`}
-              onClick={() => setMode("login")}
+              onClick={() => {
+                setMode("login");
+                setEmail("");
+                setPassword("");
+                setSignupSuccess(false);
+              }}
             >
               Login
             </button>
             <button
               className={`flex-1 py-2 rounded-xl font-semibold transition-shadow ${mode === "signup" ? "bg-gradient-to-r from-green-400 to-green-600 text-white shadow" : "bg-white text-gray-700"}`}
-              onClick={() => setMode("signup")}
+              onClick={() => {
+                setMode("signup");
+                setSignupSuccess(false);
+              }}
             >
               Sign up
-            </button>
-            <button
-              className={`flex-1 py-2 rounded-xl font-semibold transition-shadow ${mode === "forgot" ? "bg-gradient-to-r from-green-400 to-green-600 text-white shadow" : "bg-white text-gray-700"}`}
-              onClick={() => setMode("forgot")}
-            >
-              Forgot
             </button>
           </div>
 
@@ -196,11 +203,11 @@ export default function LoginPage() {
               <div className="mt-4">
                 <button type="submit" disabled={loading} className="w-full py-3 rounded-lg text-white bg-gradient-to-r from-green-400 to-green-600 shadow-lg font-semibold">{loading ? "Logging in..." : "Login"}</button>
               </div>
-              <div className="text-center text-sm text-gray-600 mt-2">Or use Sign up / Forgot in this box</div>
+              <div className="text-center text-sm text-gray-600 mt-2">Or use Sign up in this box</div>
             </form>
           )}
 
-          {mode === "signup" && (
+          {mode === "signup" && !signupSuccess && (
             <form onSubmit={handleSignup} className="space-y-4">
               <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} required />
               <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -213,39 +220,58 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <div className="flex gap-2 items-end">
-                <div className="flex-1">
-                  <Input label="OTP" value={signupOtp} onChange={(e) => setSignupOtp(e.target.value)} placeholder="Enter OTP" />
-                </div>
-                <div>
-                  <Button type="button" variant="success" onClick={requestSignupOtp}>Get OTP</Button>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">OTP</label>
+                <div className="flex gap-2 items-center">
+                  <input value={signupOtp} onChange={(e) => setSignupOtp(e.target.value)} placeholder="Enter OTP" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300 focus:border-transparent" />
+                  <Button type="button" variant="success" onClick={requestSignupOtp} className="px-4 py-1 whitespace-nowrap">Get OTP</Button>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <button type="button" className="text-sm text-gray-600 cursor-pointer" onClick={() => setMode("login")}>Back to login</button>
-                <Button type="submit" disabled={loading} variant="success">{loading ? "Signing up..." : "Sign up"}</Button>
+              <div className="flex justify-center mt-6">
+                <Button type="submit" disabled={loading} variant="success" className="px-12 py-3">{loading ? "Signing up..." : "Sign up"}</Button>
               </div>
             </form>
+          )}
+
+          {mode === "signup" && signupSuccess && (
+            <div className="text-center space-y-4">
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+                <p className="font-semibold">✓ Account created successfully!</p>
+                <p className="text-sm">You can now login with your credentials.</p>
+              </div>
+              <div className="flex justify-center">
+                <Button type="button" variant="success" onClick={() => {
+                  setMode("login");
+                  setEmail("");
+                  setPassword("");
+                  setName("");
+                  setConfirmPassword("");
+                  setSignupOtp("");
+                  setShowPassword(false);
+                  setShowConfirm(false);
+                  setSignupSuccess(false);
+                }} className="px-12 py-3">Back to login</Button>
+              </div>
+            </div>
           )}
 
           {mode === "forgot" && (
             <form onSubmit={handleReset} className="space-y-4">
               <Input label="Email" type="email" value={email} onChange={(e) => { setEmail(e.target.value); setIsExistingUser(null); }} required />
 
-              <div className="flex gap-2">
-                <Button type="button" variant="success" onClick={checkEmailExists}>Verify Email</Button>
-                <div className="flex-1 text-sm text-gray-600 self-center">{isExistingUser === null ? "" : isExistingUser ? "User found" : "User not found"}</div>
+              <div className="flex gap-2 items-center">
+                <Button type="button" variant="success" onClick={checkEmailExists} className="px-6">Verify Email</Button>
+                <div className="flex-1 text-sm text-gray-600">{isExistingUser === null ? "" : isExistingUser ? "✓ User found" : "✗ User not found"}</div>
               </div>
 
               {isExistingUser && (
                 <>
-                  <div className="flex gap-2 items-end">
-                    <div className="flex-1">
-                      <Input label="OTP" value={forgotOtp} onChange={(e) => setForgotOtp(e.target.value)} placeholder="Enter OTP" />
-                    </div>
-                    <div>
-                      <Button type="button" variant="success" onClick={requestForgotOtp}>Get OTP</Button>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">OTP</label>
+                    <div className="flex gap-2 items-center">
+                      <input value={forgotOtp} onChange={(e) => setForgotOtp(e.target.value)} placeholder="Enter OTP" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300 focus:border-transparent" />
+                      <Button type="button" variant="success" onClick={requestForgotOtp} className="px-4 py-1 whitespace-nowrap">Get OTP</Button>
                     </div>
                   </div>
 
@@ -253,9 +279,16 @@ export default function LoginPage() {
                     <Input label="New password" type={showNewPassword ? "text" : "password"} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <button type="button" className="text-sm text-gray-600 cursor-pointer" onClick={() => setMode("login")}>Back to login</button>
-                    <Button type="submit" disabled={loading} variant="success">{loading ? "Resetting..." : "Reset password"}</Button>
+                  <div className="flex justify-between items-center mt-6">
+                    <button type="button" className="text-sm text-gray-600 hover:underline cursor-pointer" onClick={() => {
+                      setMode("login");
+                      setEmail("");
+                      setIsExistingUser(null);
+                      setForgotOtp("");
+                      setNewPassword("");
+                      setShowNewPassword(false);
+                    }}>Back to login</button>
+                    <Button type="submit" disabled={loading} variant="success" className="px-8">{loading ? "Resetting..." : "Reset password"}</Button>
                   </div>
                 </>
               )}
@@ -263,15 +296,15 @@ export default function LoginPage() {
           )}
 
           {/* Demo credentials */}
-          <div className="mt-6 pt-6 border-t space-y-3">
+          <div className="mt-6 pt-6 border-t space-y-2">
             <p className="text-sm text-gray-600 font-medium">Demo Credentials:</p>
-            <div className="space-y-2 text-sm">
-              <div className="bg-blue-50 p-3 rounded-lg">
+            <div className="flex gap-3 text-sm">
+              <div className="flex-1 bg-blue-50 p-3 rounded-lg">
                 <p className="font-semibold text-blue-900">Admin Account</p>
                 <p className="text-blue-700">Email: admin@teamflow.com</p>
                 <p className="text-blue-700">Password: admin123</p>
               </div>
-              <div className="bg-green-50 p-3 rounded-lg">
+              <div className="flex-1 bg-green-50 p-3 rounded-lg">
                 <p className="font-semibold text-green-900">User Account</p>
                 <p className="text-green-700">Email: user@teamflow.com</p>
                 <p className="text-green-700">Password: user123</p>
