@@ -68,3 +68,15 @@ enum Priority {
   MEDIUM
   HIGH
 }
+
+model Otp {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  purpose   String
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("otps")
+}

@@ -101,6 +101,11 @@ export default function LoginPage() {
             </Button>
           </form>
 
+          <div className="flex items-center justify-between mt-4">
+            <a href="/forgot" className="text-sm text-blue-600 hover:underline">Forgot password?</a>
+            <a href="/signup" className="text-sm text-blue-600 hover:underline">Sign up</a>
+          </div>
+
           {/* Demo credentials */}
           <div className="mt-8 pt-8 border-t space-y-3">
             <p className="text-sm text-gray-600 font-medium">Demo Credentials:</p>
