@@ -279,7 +279,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3000
 
 4. **Reset Database**
    ```bash
-   npm run prisma:migrate reset
+   npx prisma migrate reset
    npm run prisma:seed
    ```
 

@@ -18,55 +18,34 @@ NEXT_PUBLIC_API_URL=https://yourdomain.com
 
 ## Deployment Platforms
 
-### 1. Railway (Recommended)
+### 1. Vercel (Recommended)
 
-**Best for**: Quick setup with built-in PostgreSQL plugin and simple CI integration
+**Best for**: Fast Next.js deployment with automatic previews and production builds.
 
 #### Steps:
 
 1. Push code to GitHub
-2. Go to https://railway.app and create a new project
-3. Connect your GitHub repository to Railway
-4. Add the PostgreSQL plugin (Railway will provision a database)
-5. In Railway project settings, add the following environment variables:
-   - `DATABASE_URL` (provided by the plugin)
+2. Go to [vercel.com/new](https://vercel.com/new)
+3. Import your GitHub repository
+4. Add or connect your PostgreSQL database (Neon recommended)
+5. In Vercel project settings, add the following environment variables:
+   - `DATABASE_URL`
    - `JWT_SECRET`
    - `NEXT_PUBLIC_API_URL`
-6. Deploy — Railway will run the build automatically
+   - `RESEND_API_KEY`
+   - `RESEND_FROM_EMAIL`
+6. Deploy — Vercel will run the build automatically
 
 #### Database Setup:
 
-After the first deploy, run migrations and seed via Railway's console or in a CI step:
+After the first deploy, run migrations and seed from your local machine or CI pipeline:
 
 ```bash
 npx prisma migrate deploy
 npm run prisma:seed
 ```
 
-Railway also supports running one-off commands from the dashboard to run migrations or seeds directly against the provisioned database.
-
-### 2. Railway
-
-**Best for**: Quick setup with built-in database options
-
-#### Steps:
-
-1. Go to [railway.app](https://railway.app)
-2. Create new project
-3. Add PostgreSQL database
-4. Add GitHub repository
-5. Configure environment variables
-6. Deploy
-
-#### Database Setup:
-
-```bash
-# After deployment
-npm run prisma:migrate
-npm run prisma:seed
-```
-
-### 3. Render
+### 2. Render
 
 **Best for**: Free tier with good performance
 
@@ -83,7 +62,7 @@ npm run prisma:seed
 6. Add PostgreSQL database
 7. Deploy
 
-### 4. AWS (EC2)
+### 3. AWS (EC2)
 
 **Best for**: Full control and scalability
 
@@ -131,7 +110,7 @@ npm run prisma:seed
     pm2 save
     ```
 
-### 5. Docker Deployment
+### 4. Docker Deployment
 
 Create `Dockerfile`:
 
@@ -187,7 +166,7 @@ Deploy:
 docker-compose up -d
 ```
 
-### 6. Heroku
+### 5. Heroku
 
 **Steps:**
 

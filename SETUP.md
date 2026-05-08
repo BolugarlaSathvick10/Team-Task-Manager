@@ -114,7 +114,7 @@ psql $DATABASE_URL -c "SELECT 1;"
 
 # If fails, regenerate schema
 npm run prisma:generate
-npm run prisma:migrate reset
+npx prisma migrate reset
 ```
 
 ### Port Already in Use
@@ -263,7 +263,7 @@ npx prisma studio
 npx prisma generate --skip-engine-check
 
 # Reset database
-npm run prisma:migrate reset
+npx prisma migrate reset
 ```
 
 ## Success Checklist
@@ -283,7 +283,6 @@ Once all checked, you're ready to go! 🚀
 
 See DEPLOYMENT.md for production deployment options:
 - Vercel
-- Railway
 - Render
 - AWS
 - Docker

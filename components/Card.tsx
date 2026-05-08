@@ -12,7 +12,7 @@ export function Card({ children, className = "", onClick }: CardProps) {
   return (
     <div
       onClick={onClick}
-      className={`bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow ${className}`}
+      className={`rounded-2xl border border-slate-200/70 bg-white/90 p-6 shadow-sm backdrop-blur-sm hover:-translate-y-0.5 hover:shadow-lg ${className}`}
     >
       {children}
     </div>
@@ -25,7 +25,11 @@ interface CardHeaderProps {
 }
 
 export function CardHeader({ children, className = "" }: CardHeaderProps) {
-  return <div className={`border-b pb-4 mb-4 ${className}`}>{children}</div>;
+  return (
+    <div className={`mb-5 border-b border-slate-200 pb-4 ${className}`}>
+      {children}
+    </div>
+  );
 }
 
 interface CardBodyProps {
@@ -44,7 +48,7 @@ interface CardFooterProps {
 
 export function CardFooter({ children, className = "" }: CardFooterProps) {
   return (
-    <div className={`border-t pt-4 mt-4 flex gap-2 ${className}`}>
+    <div className={`mt-5 flex gap-2 border-t border-slate-200 pt-4 ${className}`}>
       {children}
     </div>
   );

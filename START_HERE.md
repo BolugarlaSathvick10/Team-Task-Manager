@@ -90,7 +90,6 @@ Go to [http://localhost:3000](http://localhost:3000)
 ### For Production:
 1. 🚀 See DEPLOYMENT.md for options:
    - Vercel (recommended)
-   - Railway
    - Render
    - AWS
    - Docker
@@ -207,7 +206,7 @@ Alerts:    React Hot Toast
 A: Check DATABASE_URL in .env.local
 
 **Q: Forgot admin password?**
-A: Reseed the database: `npm run prisma:migrate reset && npm run prisma:seed`
+A: Reseed the database: `npx prisma migrate reset && npm run prisma:seed`
 
 **Q: How to add more users?**
 A: Use Admin panel → Users → New User
@@ -244,7 +243,7 @@ npm install
 
 ### Need fresh start?
 ```bash
-npm run prisma:migrate reset
+npx prisma migrate reset
 npm run prisma:seed
 ```
 

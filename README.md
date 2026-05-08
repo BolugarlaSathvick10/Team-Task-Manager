@@ -208,22 +208,25 @@ npm run build
 npm start
 ```
 
-### Deploy to Railway
+### Deploy to Vercel
 
-1. Push code to GitHub
-2. Go to https://railway.app and create a new project
-3. Connect your GitHub repository to Railway
-4. Add a PostgreSQL plugin or provision a database and copy the connection string
-5. Add environment variables in Railway dashboard (see below)
-6. Deploy — Railway will build and start your app automatically
+1. Push code to GitHub.
+2. Import the repository into [Vercel](https://vercel.com/new).
+3. In project settings, add the required environment variables:
+   - `DATABASE_URL` (PostgreSQL connection string)
+   - `JWT_SECRET` (strong random secret)
+   - `NEXT_PUBLIC_API_URL` (your production app URL)
+   - `RESEND_API_KEY` (for OTP emails)
+   - `RESEND_FROM_EMAIL` (verified sender address)
+4. Deploy from `master` (or your preferred production branch).
 
-Environment variables to add in Railway:
+Vercel installs dependencies and runs `npm run build` automatically.
 
-- `DATABASE_URL` — PostgreSQL connection string
-- `JWT_SECRET` — secure random secret for JWT tokens
-- `NEXT_PUBLIC_API_URL` — your app public URL (e.g. `https://your-app.up.railway.app`)
+> Prisma client generation is handled during install via `postinstall`.
 
-After deployment, run migrations and seed (Rails console or CI step):
+### Post-Deployment Database Steps
+
+Run these commands against your production database when needed:
 
 ```bash
 npx prisma migrate deploy
@@ -232,13 +235,12 @@ npm run prisma:seed
 
 ### Deploy to Other Platforms
 
-The project is ready for deployment on any platform supporting Node.js:
-- Heroku
-- Railway
+The project can also be deployed on any Node.js platform:
 - Render
 - AWS
 - Google Cloud
 - Azure
+- Heroku
 
 ## Performance Considerations
 
@@ -270,7 +272,7 @@ This project is open source and available under the MIT License.
 
 ## Support
 
-For support, email support@teamflow.com or open an issue on GitHub.
+For support, open an issue on GitHub.
 
 ## Changelog
 
