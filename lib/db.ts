@@ -1,9 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+import prismaClientPkg from "@prisma/client";
+import type { PrismaClient as PrismaClientType } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+const { PrismaClient } = prismaClientPkg as unknown as {
+  PrismaClient: new (...args: unknown[]) => PrismaClientType;
+};
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClientType };
 
-export const prisma =
+export const prisma: PrismaClientType =
   globalForPrisma.prisma ??
   new PrismaClient({
     adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
