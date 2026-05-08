@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { comparePasswords, generateToken, setAuthCookie } from "@/lib/auth";
-import { validateEmail, validatePassword } from "@/lib/validations";
+import { validateEmail } from "@/lib/validations";
 import type { ApiResponse, User } from "@/lib/types";
 
 export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse<{ user: User; token: string }>>> {
   try {
-    const { email, password } = await req.json();
+    const body = await req.json();
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const password = typeof body.password === "string" ? body.password.trim() : "";
 
     // Validate input
     if (!email || !password) {

@@ -40,10 +40,12 @@ export default function LoginPage() {
     setErrors({});
     setLoading(true);
     try {
+      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedPassword = password.trim();
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: normalizedEmail, password: normalizedPassword }),
       });
       const data = await res.json();
       if (!data.success) {

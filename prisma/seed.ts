@@ -1,7 +1,5 @@
 import "dotenv/config";
-const { PrismaClient } = require("@prisma/client") as {
-  PrismaClient: any;
-};
+import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hashPassword } from "../lib/auth";
 
